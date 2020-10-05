@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const PersonSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique:true
   } ,
   age:{
       type:Number
@@ -18,20 +19,20 @@ module.exports = Person= mongoose.model("person", PersonSchema);
 
 //creating a model
 
-const personModel= mongoose.model("person", PersonSchema);
+const people= mongoose.model("people", PersonSchema);
+
 
 //creating a record
-const person =new personModel({
+const jon =new people({
     name:"Jon",
     age:35,
     favoriteFoods:["pizza","burger"]
 })
-person.save((err)=>{
-err?console.log("error while saving model"):
-console.log("model saved successfully")
-})
-
-
+jon.save((err)=>{
+    err?console.log("error while saving model"):
+    console.log("model saved successfully")
+    })
+    
 // creating multiple record
 
 const personArr = [
@@ -60,14 +61,15 @@ const personArr = [
         favoriteFoods:["mhamsa","hargma","ojja"]
     }
 ]
-personModel.create(personArr,(err)=>{
+people.create(personArr,(err)=>{
     err?console.log("error while adding multiple record"):
     console.log("multiple record added successfully")
 })
 
 
+
 //using find
-personModel
+people
   .find({ name: "Aayachi" })
   .then((data) => {
     console.log(data);
@@ -77,7 +79,7 @@ personModel
   });
 
   //using findOne
-  personModel
+  people
   .findOne({ favoriteFoods: { $in: ["pizza"] } })
   .then((data) => {
     console.log(data);
@@ -86,20 +88,23 @@ personModel
     console.error(err);
   });
 
-  //using findById
-  personModel
-  .findById({
-    _id: "5f4d7316887a9921a884fb0d",
-  })
-  .then((data) => {
-    console.log(data);
-  })
-  .catch((err) => {
-    console.error(err);
-  });
 
-  //classic updates
-  personModel.findById("5f4d7316887a9921a884fb0d", (err, person) => {
+ //using findById
+ people
+ .findById({
+   _id: "5f7b712667f31a54144f8447",
+ })
+ .then((data) => {
+   console.log(data);
+ })
+ .catch((err) => {
+   console.error(err);
+ });
+
+
+
+ //classic updates
+ people.findById("5f7b712667f31a54144f8447", (err, person) => {
     err? console.log(err):
     person.favoriteFoods.push("fries");
     person.save((err, person) => {
@@ -108,8 +113,9 @@ personModel
     });
   });
 
-  //new updates
-  personModel.findOneAndUpdate(
+
+   //new updates
+   people.findOneAndUpdate(
     { name: "Ayachi" },
     { age: 36 },
     { new: true },
@@ -119,9 +125,10 @@ personModel
     }
   );
 
-  //delete one document
-  personModel.findOneAndRemove(
-    "5f4d7316887a9921a884fb0d",
+
+   //delete one document
+   people.findOneAndRemove(
+    "5f7b712667f31a54144f8447",
     (err, person) => {
       err? console.log(err):
       console.log(person);
@@ -129,18 +136,18 @@ personModel
   );
 
 
-  //delete many documents
-  personModel.deleteMany({ name: "Ayachi" }, (err) => {
-   err? console.log(err):
-    console.log("Person(s) with name 'Ayachi' was deleted");
-  });
+   //delete many documents
+   people.deleteMany({ name: "Ayachi" }, (err) => {
+    err? console.log(err):
+     console.log("Person(s) with name 'Ayachi' was deleted");
+   });
 
-//chain search querry
-personModel
-  .find({ favoriteFoods: { $in: ["pizza"] } })
-  .sort({ name: 1 })
-  .limit(2)
-  .select("-age")
-  .exec()
-  .then((doc) => console.log(doc))
-  .catch((err) => console.error(err));
+   //chain search querry
+people
+.find({ favoriteFoods: { $in: ["pizza"] } })
+.sort({ name: 1 })
+.limit(2)
+.select("-age")
+.exec()
+.then((data) => console.log(data))
+.catch((err) => console.error(err));

@@ -7,6 +7,9 @@ const port= process.env.PORT||5000;
 app.use(express.json())
 //connecting database
 connectDB()
+
+app.use('person',require('./models/Person'));
+
  //running the server
 app.listen(port,err  => 
     err?console.log(err):
