@@ -8,7 +8,7 @@ app.use(express.json())
 //connecting database
 connectDB()
 
-app.use('person',require('./models/Person'));
+app.use('/',require('./routes/person'));
 
  //running the server
 app.listen(port,err  => 
